@@ -22,10 +22,10 @@ jobs:
     steps:
       # Get code from repo
       - name: Checkout code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       # Install NodeJS
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
       # Run rush install
