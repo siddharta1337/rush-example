@@ -1,0 +1,39 @@
+# Name of workflow
+name: Main workflow
+
+# When workflow is triggered
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+# Jobs to carry out
+jobs:
+ 
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    env:
+      CI: true
+    steps:
+      # Get code from repo
+      - name: Checkout code
+        uses: actions/checkout@v1
+      # Install NodeJS
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      # Run rush install
+      - name: Install dependencies
+        run: |
+          node common/scripts/install-run-rush.js change -v
+          node common/scripts/install-run-rush.js install
+          node common/scripts/install-run-rush.js build
+      # Run unit tests for all packages
+      - name: Run tests
+        run: node common/scripts/install-run-rush.js test
